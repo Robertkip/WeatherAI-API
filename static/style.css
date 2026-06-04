@@ -1,0 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --bg:         #0a0d17;
+  --panel:      #111827;
+  --border:     rgba(255, 255, 255, 0.08);
+  --ink:        #f8fafc;
+  --ink-dim:    #64748b;
+  --accent:     #00d4aa;
+  --error:      #f87171;
+  --mono:       'Space Mono', monospace;
+  --serif:      'Fraunces', Georgia, serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--mono);
+  color: var(--ink);
+  background: var(--bg);
+  min-height: 100vh;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+/* ── Topbar ─────────────────────────────────────────────── */
+.topbar {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+
+.accent { color: var(--accent); }
+
+/* ── Two-column layout ──────────────────────────────────── */
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+.col-left {
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 52px;
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+
+.col-right {
+  background: var(--bg);
+}
+
+/* ── Panel sections ─────────────────────────────────────── */
+.panel-section {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Section labels (like "DEVELOPER REFERENCE") ────────── */
+.section-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+/* ── Form controls ──────────────────────────────────────── */
+input[type="text"],
+select {
+  width: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.55rem 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.15s;
+  appearance: none;
+}
+
+input[type="text"]:focus,
+select:focus {
+  border-color: var(--accent);
+}
+
+select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+
+#refresh {
+  width: 100%;
+  background: var(--accent);
+  color: #0a0d17;
+  border: none;
+  border-radius: 5px;
+  padding: 0.6rem 1rem;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+#refresh:hover   { filter: brightness(1.1); }
+#refresh:disabled { opacity: 0.45; cursor: wait; }
+
+/* ── Status bar ─────────────────────────────────────────── */
+.status {
+  margin: 1.25rem 1.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--panel);
+  color: var(--ink-dim);
+  font-size: 0.8rem;
+}
+
+.status.error {
+  background: rgba(248, 113, 113, 0.07);
+  border-color: rgba(248, 113, 113, 0.25);
+  color: var(--error);
+}
+
+/* ── Current conditions ─────────────────────────────────── */
+.current-main {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.temp {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(3.2rem, 7vw, 4.8rem);
+  line-height: 1;
+  color: var(--accent);
+}
+
+.condition {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.place {
+  color: var(--ink-dim);
+  font-size: 0.78rem;
+  margin-top: 0.2rem;
+}
+
+/* ── Stats row ──────────────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--border);
+}
+
+.stat {
+  padding: 1rem 1.5rem;
+  border-right: 1px solid var(--border);
+}
+
+.stat:last-child { border-right: none; }
+
+.stat-label {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-dim);
+  margin-bottom: 0.35rem;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* ── AI summary ─────────────────────────────────────────── */
+.ai-text {
+  font-size: 0.88rem;
+  color: var(--ink);
+  line-height: 1.75;
+  border-left: 2px solid var(--accent);
+  padding-left: 0.9rem;
+}
+
+/* ── Forecast ───────────────────────────────────────────── */
+.forecast {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  border-bottom: 1px solid var(--border);
+}
+
+.day {
+  padding: 1.1rem 0.75rem;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+
+.day:last-child { border-right: none; }
+
+.day-date {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.day-cond {
+  font-family: var(--serif);
+  font-size: 0.82rem;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+  min-height: 2.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day-temps {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.day-temps .hi { color: var(--accent); font-weight: 700; }
+.day-temps .lo { color: var(--ink-dim); }
+
+/* ── Footer ─────────────────────────────────────────────── */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.68rem;
+  color: var(--ink-dim);
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .col-left {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .stat {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat:last-child { border-bottom: none; }
+
+  .forecast {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

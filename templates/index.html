@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeatherAI Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <nav class="topbar">
+    <span class="brand">Weather<span class="accent">AI</span> Dashboard</span>
+  </nav>
+
+  <div class="layout">
+
+    <!-- Left column: controls -->
+    <aside class="col-left">
+      <div class="panel-section">
+        <div class="section-label">Location</div>
+        <input
+          type="text"
+          id="city"
+          placeholder="Enter city, e.g. Nairobi"
+          value="Nairobi"
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+
+      <div class="panel-section">
+        <div class="section-label">Units</div>
+        <select id="units">
+          <option value="metric">°C — Metric</option>
+          <option value="imperial">°F — Imperial</option>
+        </select>
+      </div>
+
+      <div class="panel-section">
+        <button id="refresh">Get weather</button>
+      </div>
+    </aside>
+
+    <!-- Right column: weather output -->
+    <main class="col-right">
+
+      <section id="status" class="status" hidden></section>
+
+      <div id="current" hidden>
+        <div class="panel-section">
+          <div class="section-label">Current Conditions</div>
+          <div class="current-main">
+            <span id="temp" class="temp">--</span>
+            <div>
+              <div id="condition" class="condition">--</div>
+              <div id="place" class="place">--</div>
+            </div>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat">
+            <span class="stat-label">Humidity</span>
+            <span id="humidity" class="stat-value">--</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Wind</span>
+            <span id="wind" class="stat-value">--</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Feels like</span>
+            <span id="feels" class="stat-value">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="ai-box" hidden>
+        <div class="panel-section">
+          <div class="section-label">AI Summary</div>
+          <p id="ai-summary" class="ai-text">--</p>
+        </div>
+      </div>
+
+      <section id="forecast" class="forecast" hidden></section>
+
+      <footer class="footer">
+        <span id="cache-note"></span>
+        <span>Data via WeatherAI API &copy; All rights reserved 2026</span>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
