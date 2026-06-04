@@ -103,6 +103,34 @@ async function loadWeather() {
   }
 }
 
+function getWeatherIcon(conditionText) {
+  if (!conditionText || conditionText === "—") return "";
+  const t = conditionText.toLowerCase();
+  if (t.includes("thunder") || t.includes("storm")) return "⛈";
+  if (t.includes("drizzle") || t.includes("light rain") || t.includes("partly rain") || t.includes("partial rain") || t.includes("light shower")) return "🌦";
+  if (t.includes("heavy rain") || t.includes("downpour")) return "🌧";
+  if (t.includes("rain") || t.includes("shower")) return "🌧";
+  if (t.includes("snow") || t.includes("blizzard") || t.includes("sleet")) return "🌨";
+  if (t.includes("fog") || t.includes("mist") || t.includes("haze")) return "🌫";
+  if (t.includes("partly cloudy") || t.includes("mostly cloudy") || t.includes("scattered cloud")) return "⛅";
+  if (t.includes("overcast") || t.includes("cloudy")) return "☁";
+  if (t.includes("clear") || t.includes("sunny") || t.includes("fair") || t.includes("mainly clear")) return "☀";
+  if (t.includes("wind") || t.includes("breezy")) return "💨";
+  return "🌡";
+}
+
+// Extract human-readable condition from icon URL, e.g.
+// "https://cdn.weather-ai.co/icons/default/53_drizzle_moderate_day.svg" → "Drizzle Moderate"
+function conditionFromIcon(iconUrl) {
+  if (!iconUrl) return null;
+  const filename = iconUrl.split("/").pop().replace(".svg", "");
+  const parts = filename.split("_").slice(1); // strip leading WMO code number
+  if (parts[parts.length - 1] === "day" || parts[parts.length - 1] === "night") {
+    parts.pop();
+  }
+  return parts.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+}
+
 function render(data, units) {
   const sym = units === "imperial" ? "°F" : "°C";
 
@@ -110,18 +138,38 @@ function render(data, units) {
   const current = pick(data, ["current", "current_conditions", "now"], data);
 
   const temp = pick(current, ["temp", "temperature", "temp_c", "temp_f"]);
-  const condition = pick(current, [
-    "condition", "summary", "description", "weather", "text",
-  ], "—");
-  const humidity = pick(current, ["humidity", "humidity_pct"]);
+
+  // Condition text lives in the icon filename, e.g. "53_drizzle_moderate_day.svg"
+  const conditionText = pick(current, [
+    "condition", "condition.text", "summary", "description",
+    "weather", "weather_description", "text", "weather_text",
+    "sky_condition", "sky", "status",
+  ]);
+  const iconUrl = pick(current, ["icon", "icon_url", "weather_icon"]);
+  const condition = conditionText || conditionFromIcon(iconUrl) || "—";
+
+  // humidity & feels_like are in the hourly array, not current
+  const hourly = pick(data, ["hourly"], []);
+  const currentTime = pick(current, ["time"], "");
+  let currentHour = null;
+  if (Array.isArray(hourly) && currentTime) {
+    const prefix = currentTime.substring(0, 13); // "YYYY-MM-DDTHH"
+    currentHour = hourly.find((h) => (h.time || "").startsWith(prefix)) || hourly[0];
+  }
+
+  const humidity = pick(currentHour || current, ["humidity", "humidity_pct"]);
   const wind = pick(current, ["wind", "wind_speed", "windSpeed"]);
-  const feels = pick(current, ["feels_like", "feelsLike", "apparent_temp"]);
+  const feels = pick(currentHour || current, ["feels_like", "feelsLike", "apparent_temp"]);
 
   const city = pick(data, ["location.city", "city", "place", "name"], "");
   const region = pick(data, ["location.region", "region", "country"], "");
 
   els.temp.textContent = temp !== null ? `${Math.round(temp)}${sym}` : "—";
-  els.condition.textContent = condition;
+
+  const icon = getWeatherIcon(condition);
+  els.condition.textContent = condition !== "—" && icon
+    ? `${icon} ${condition}`
+    : condition;
   els.place.textContent = [city, region].filter(Boolean).join(", ") || "Selected location";
   els.humidity.textContent = humidity !== null ? `${humidity}%` : "—";
   els.wind.textContent = wind !== null ? `${wind}` : "—";
@@ -149,13 +197,16 @@ function render(data, units) {
       const date = pick(day, ["date", "day", "datetime", "valid_date"], "");
       const hi = pick(day, ["max", "high", "temp_max", "max_temp"]);
       const lo = pick(day, ["min", "low", "temp_min", "min_temp"]);
-      const cond = pick(day, ["condition", "summary", "description", "weather"], "");
+      const condText = pick(day, ["condition", "condition.text", "summary", "description", "weather", "weather_description", "text"]);
+      const dayIconUrl = pick(day, ["icon", "icon_url", "weather_icon"]);
+      const cond = condText || conditionFromIcon(dayIconUrl) || "";
+      const dayIcon = getWeatherIcon(cond);
 
       const card = document.createElement("div");
       card.className = "card day";
       card.innerHTML = `
         <div class="day-date">${formatDate(date)}</div>
-        <div class="day-cond">${cond}</div>
+        <div class="day-cond">${dayIcon ? `<span class="day-icon">${dayIcon}</span>` : ""}${cond}</div>
         <div class="day-temps">
           <span class="hi">${hi !== null ? Math.round(hi) + sym : "—"}</span>
           <span class="lo">${lo !== null ? Math.round(lo) + sym : "—"}</span>

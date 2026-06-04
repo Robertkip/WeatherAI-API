@@ -164,6 +164,10 @@ select {
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
 }
 
 .place {
@@ -243,8 +247,15 @@ select {
   margin-bottom: 0.5rem;
   min-height: 2.2em;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.2rem;
+}
+
+.day-icon {
+  font-size: 1.4rem;
+  line-height: 1;
 }
 
 .day-temps {

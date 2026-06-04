@@ -1,8 +1,7 @@
 # WeatherAI Dashboard
 
-A small, production-minded weather dashboard built on the [WeatherAI API](https://weather-ai.co/docs). It shows current conditions, a multi-day forecast, and the API's AI-generated summary for any of several preset locations.
-
-The project is intentionally focused: it does **one thing well** rather than touching every endpoint. The interesting parts are architectural, not feature-count.
+A small, production-minded weather dashboard built on the WeatherAI API. It shows current conditions and a multi-day forecast for any of several preset locations.
+The project is intentionally focused: it does one thing well rather than touching every endpoint. The interesting parts are architectural, not feature-count.
 
 
 ## Why it's built this way
