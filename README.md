@@ -29,8 +29,8 @@ Requires Python 3.12+.
 
 ```bash
 # 1. Clone and enter
-git clone https://github.com/<you>/weather-dashboard.git
-cd weather-dashboard
+git clone https://github.com/Robertkip/WeatherAI-API.git
+cd WeatherAI-API
 
 # 2. Create a virtual environment
 python -m venv .venv
