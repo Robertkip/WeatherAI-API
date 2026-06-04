@@ -4,7 +4,6 @@ A small, production-minded weather dashboard built on the [WeatherAI API](https:
 
 The project is intentionally focused: it does **one thing well** rather than touching every endpoint. The interesting parts are architectural, not feature-count.
 
-![dashboard](docs/screenshot.png)
 
 ## Why it's built this way
 
