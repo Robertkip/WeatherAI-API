@@ -37,7 +37,7 @@ REQUEST_TIMEOUT = float(os.getenv("REQUEST_TIMEOUT_SECONDS", "12"))
 
 app = FastAPI(
     title="WeatherAI Dashboard",
-    description="A small dashboard over the WeatherAI API with AI summaries.",
+    description="A small dashboard over the WeatherAI API for Weather overview.",
     version="1.0.0",
 )
 
